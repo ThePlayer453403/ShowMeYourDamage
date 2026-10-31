@@ -1,31 +1,30 @@
 {
 	"schemaVersion": 1,
-	"id": "modid",
+	"id": "showmeyordamage",
 	"version": "${version}",
-	"name": "Example Mod",
-	"description": "This is an example description! Tell everyone what your mod is about!",
+	"name": "Show Me Your Damage",
+	"description": "DamageNumbers and HealthBars",
 	"authors": [
-		"Me!"
+		"ThePlayer453403"
 	],
 	"contact": {
-		"homepage": "https://fabricmc.net/",
-		"sources": "https://github.com/FabricMC/fabric-example-mod"
+		"sources": "https://github.com/ThePlayer453403/ShowMeYourDamage"
 	},
-	"license": "CC0-1.0",
-	"icon": "assets/modid/icon.png",
+	"license": "MIT",
+	"icon": "assets/showmeyordamage/icon.png",
 	"environment": "*",
 	"entrypoints": {
 		"main": [
-			"com.example.ExampleMod"
+			"com.damage.showme.ShowMeYourDamage"
 		],
 		"client": [
-			"com.example.client.ExampleModClient"
+			"com.damage.showme.client.ShowMeYourDamageClient"
 		]
 	},
 	"mixins": [
-		"modid.mixins.json",
+		"showmeyordamage.mixins.json",
 		{
-			"config": "modid.client.mixins.json",
+			"config": "showmeyordamage.client.mixins.json",
 			"environment": "client"
 		}
 	],
