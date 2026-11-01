@@ -1,8 +1,11 @@
 package com.damage.showme;
 
+import com.damage.showme.data.ModDynamicRegistry;
+import com.damage.showme.misc.DamageNumber;
 import com.damage.showme.network.ModNetworkPayloads;
 import net.fabricmc.api.ModInitializer;
 
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.minecraft.resources.Identifier;
 
 import org.slf4j.Logger;
@@ -15,6 +18,10 @@ public class ShowMeYourDamage implements ModInitializer {
 	@Override
 	public void onInitialize() {
 		ModNetworkPayloads.register();
+		ModDynamicRegistry.register();
+
+		ServerLifecycleEvents.END_DATA_PACK_RELOAD.register((_, _, _) -> DamageNumber.reload());
+
 		LOGGER.info("Show Me Your Damage Has Successfully Loaded!");
 	}
 

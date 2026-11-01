@@ -19,6 +19,6 @@ public class LivingEntityMixin {
 
         Vec3 position = self.position();
         Vec3 numberPosition = new Vec3(position.x + Math.random() - 0.5, position.y + Math.random() + 1, position.z + Math.random() - 0.5);
-        DamageNumber.send(level, numberPosition, damage, 0xffffffff);
+        DamageNumber.send(level, numberPosition, damage, DamageNumber.getColor(level, source));
     }
 }
