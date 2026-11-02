@@ -10,7 +10,7 @@ import net.minecraft.world.phys.Vec3;
 import org.jspecify.annotations.NonNull;
 
 public record DamageTextS2CPayload(Vec3 position, String damage, int color) implements CustomPacketPayload {
-    public static final Identifier DAMAGE_NUMBER_PAYLOAD_ID = ShowMeYourDamage.id("dt");
+    public static final Identifier DAMAGE_NUMBER_PAYLOAD_ID = Identifier.fromNamespaceAndPath("smyd", "dt");
 
     public static final CustomPacketPayload.Type<DamageTextS2CPayload> TYPE = new CustomPacketPayload.Type<>(DAMAGE_NUMBER_PAYLOAD_ID);
 
