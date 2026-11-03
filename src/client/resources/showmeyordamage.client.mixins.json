@@ -1,13 +1,18 @@
 {
-	"required": true,
-	"package": "com.damage.showme.client.mixin",
-	"compatibilityLevel": "JAVA_25",
-	"client": [
-	],
-	"injectors": {
-		"defaultRequire": 1
-	},
-	"overwrites": {
-		"requireAnnotations": true
-	}
+  "required": true,
+  "package": "com.damage.showme.client.mixin",
+  "compatibilityLevel": "JAVA_25",
+  "client": [
+    "LivingEntityMixin",
+    "LivingEntityRendererMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "overwrites": {
+    "requireAnnotations": true
+  },
+  "mixins": [
+
+  ]
 }
