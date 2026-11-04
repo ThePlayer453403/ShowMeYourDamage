@@ -10,6 +10,7 @@ import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.entity.state.EntityRenderState;
 import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.decoration.ArmorStand;
 import net.minecraft.world.phys.Vec3;
 
 public class HealthBarRender {
@@ -19,12 +20,20 @@ public class HealthBarRender {
     private static final RenderStateDataKey<Float> GRADIENT = RenderStateDataKey.create(() -> "showmeyourdamage_gradient");
 
     public static void extractHealthBar(LivingEntity entity, LivingEntityRenderState state) {
+        if (entity instanceof ArmorStand) {
+            state.setData(MAX, -1f);
+            return;
+        }
         state.setData(MAX, entity.getMaxHealth());
         state.setData(HEALTH, entity.getHealth());
         state.setData(GRADIENT, entity.getAttachedOrElse(ModDataAttachment.GRADIENT, 0f));
     }
 
     public static void renderHealthBar(EntityRenderState state, PoseStack poseStack, SubmitNodeCollector collector) {
+        if (state.getDataOrDefault(MAX, 0f) < 0) {
+            return;
+        }
+
         Minecraft client = Minecraft.getInstance();
 
         if (client.player != null && client.player.position().distanceTo(new Vec3(state.x, state.y, state.z)) >= 32) {

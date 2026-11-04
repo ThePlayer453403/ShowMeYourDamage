@@ -14,7 +14,7 @@ public class LivingEntityMixin {
         LivingEntity entity = (LivingEntity) (Object) this;
 
         if (entity.getHealth() < entity.getAttachedOrElse(ModDataAttachment.GRADIENT, 0f)) {
-            entity.setAttached(ModDataAttachment.GRADIENT, entity.getAttachedOrElse(ModDataAttachment.GRADIENT, 0f) - entity.getMaxHealth() * 0.01f);
+            entity.setAttached(ModDataAttachment.GRADIENT, entity.getAttachedOrElse(ModDataAttachment.GRADIENT, 0f) - entity.getMaxHealth() * 0.03f);
         }
         if (entity.getHealth() > entity.getAttachedOrElse(ModDataAttachment.GRADIENT, 0f)) {
             entity.setAttached(ModDataAttachment.GRADIENT, entity.getHealth());
