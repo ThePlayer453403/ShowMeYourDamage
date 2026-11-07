@@ -1,6 +1,7 @@
 package com.damage.showme.client.render;
 
 import com.damage.showme.client.data.ModDataAttachment;
+import com.damage.showme.client.misc.HealthBarManager;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import net.fabricmc.fabric.api.client.rendering.v1.RenderStateDataKey;
@@ -9,21 +10,33 @@ import net.minecraft.client.gui.Font;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.entity.state.EntityRenderState;
 import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.decoration.ArmorStand;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.Vec3;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class HealthBarRender {
     private static final float HEALTH_BAR_HEIGHT = 1.8f;
     private static final RenderStateDataKey<Float> MAX = RenderStateDataKey.create(() -> "showmeyourdamage_max");
     private static final RenderStateDataKey<Float> HEALTH = RenderStateDataKey.create(() -> "showmeyourdamage_health");
     private static final RenderStateDataKey<Float> GRADIENT = RenderStateDataKey.create(() -> "showmeyourdamage_gradient");
+    private static final RenderStateDataKey<List<extractedHealthBarLine>> LINES = RenderStateDataKey.create(() -> "showmeyourdamage_lines");
 
     public static void extractHealthBar(LivingEntity entity, LivingEntityRenderState state) {
-        if (entity instanceof ArmorStand) {
+        if (entity instanceof ArmorStand || entity instanceof Player) {
             state.setData(MAX, -1f);
             return;
         }
+        List<extractedHealthBarLine> lines = new ArrayList<>();
+        HealthBarManager.getHealthBarLines().forEach(healthBarLine -> {
+            Component content = healthBarLine.content().get(entity);
+            lines.add(new extractedHealthBarLine(healthBarLine.height(), Minecraft.getInstance().font.width(content) / 2f, content));
+        });
+        state.setData(LINES, lines);
         state.setData(MAX, entity.getMaxHealth());
         state.setData(HEALTH, entity.getHealth());
         state.setData(GRADIENT, entity.getAttachedOrElse(ModDataAttachment.GRADIENT, 0f));
@@ -57,6 +70,15 @@ public class HealthBarRender {
         collector.submitTextBackground(poseStack, x, 0, width * (state.getDataOrDefault(GRADIENT, 0f) / state.getDataOrDefault(MAX, 1f)) + x, HEALTH_BAR_HEIGHT, 0xffffd17e, Font.DisplayMode.NORMAL, 0xf000f0);
         poseStack.translate(0, 0, 0.001f);
         collector.submitTextBackground(poseStack, x, 0, width * (state.getDataOrDefault(HEALTH, 0f) / state.getDataOrDefault(MAX, 1f)) + x, HEALTH_BAR_HEIGHT, 0xffff5a5a, Font.DisplayMode.NORMAL, 0xf000f0);
+
+        poseStack.scale(0.5f, 0.5f, 0.5f);
+        state.getDataOrDefault(LINES, new ArrayList<>()).forEach(extractedHealthBarLine -> {
+            poseStack.translate(0, -extractedHealthBarLine.height(), 0);
+            collector.submitText(poseStack, -extractedHealthBarLine.x(), 0, extractedHealthBarLine.content().getVisualOrderText(), true, Font.DisplayMode.SEE_THROUGH, 0xf000f0, 0xffffffff,0,0);
+        });
+
         poseStack.popPose();
     }
+
+    public record extractedHealthBarLine(float height, float x, Component content) {}
 }
