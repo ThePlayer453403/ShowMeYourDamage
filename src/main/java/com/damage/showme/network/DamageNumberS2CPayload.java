@@ -1,6 +1,5 @@
 package com.damage.showme.network;
 
-import com.damage.showme.ShowMeYourDamage;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;

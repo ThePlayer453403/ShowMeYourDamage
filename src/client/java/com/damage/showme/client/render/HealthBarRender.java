@@ -12,8 +12,8 @@ import net.minecraft.client.renderer.entity.state.EntityRenderState;
 import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.decoration.ArmorStand;
-import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.ambient.Bat;
 import net.minecraft.world.phys.Vec3;
 
 import java.util.ArrayList;
@@ -27,7 +27,7 @@ public class HealthBarRender {
     private static final RenderStateDataKey<List<extractedHealthBarLine>> LINES = RenderStateDataKey.create(() -> "showmeyourdamage_lines");
 
     public static void extractHealthBar(LivingEntity entity, LivingEntityRenderState state) {
-        if (entity instanceof ArmorStand || entity instanceof Player) {
+        if (!(entity instanceof Mob) || entity instanceof Bat) {
             state.setData(MAX, -1f);
             return;
         }
